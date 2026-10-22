@@ -1,0 +1,5 @@
+# Кто назначается ревьюером автоматически.
+# Команды создаются в настройках организации: Teams -> New team.
+
+*             @matchdayy/backend
+/frontend/    @matchdayy/frontend
