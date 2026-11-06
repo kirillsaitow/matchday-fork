@@ -47,6 +47,9 @@ jobs:
       - name: Проверить, что миграции откатываются
         working-directory: backend
         run: alembic downgrade base && alembic upgrade head
+      - name: Запустить тесты
+        working-directory: backend
+        run: pytest -v
 
   frontend:
     runs-on: ubuntu-latest
