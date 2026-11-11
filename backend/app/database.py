@@ -12,4 +12,3 @@ async def get_db() -> AsyncIterator[AsyncSession]:
     """Зависимость FastAPI: отдаёт сессию и закрывает её после запроса."""
     async with async_session() as session:
         yield session
-

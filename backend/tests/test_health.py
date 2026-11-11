@@ -15,4 +15,3 @@ def test_health_db_connected():
     response = client.get("/api/health/db")
     assert response.status_code == 200
     assert response.json()["database"] == "connected"
-

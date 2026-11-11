@@ -35,4 +35,3 @@ class Tournament(TimestampMixin, Base):
     matches: Mapped[list["Match"]] = relationship(
         back_populates="tournament", cascade="all, delete-orphan", passive_deletes=True
     )
-

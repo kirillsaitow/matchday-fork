@@ -61,4 +61,3 @@ jobs:
       - name: Собрать проект
         working-directory: frontend
         run: npm run build
-

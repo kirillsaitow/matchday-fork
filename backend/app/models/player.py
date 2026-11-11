@@ -36,4 +36,3 @@ class Player(TimestampMixin, Base):
     photo_url: Mapped[str | None] = mapped_column(String(500))
 
     team: Mapped["Team"] = relationship(back_populates="players")
-

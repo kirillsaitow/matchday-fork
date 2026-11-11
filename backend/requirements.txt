@@ -6,4 +6,3 @@ alembic==1.14.0
 pydantic-settings==2.7.0
 pytest==8.3.4
 httpx==0.28.1
-

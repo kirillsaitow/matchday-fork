@@ -79,4 +79,3 @@ class MatchEvent(TimestampMixin, Base):
     assist_player: Mapped["Player | None"] = relationship(
         foreign_keys=[assist_player_id]
     )
-

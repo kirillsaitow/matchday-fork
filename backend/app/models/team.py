@@ -32,4 +32,3 @@ class Team(TimestampMixin, Base):
     players: Mapped[list["Player"]] = relationship(
         back_populates="team", cascade="all, delete-orphan", passive_deletes=True
     )
-

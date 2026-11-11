@@ -268,4 +268,3 @@ git push -u origin feature/название-задачи
 `docker compose exec backend alembic upgrade head`.
 
 Если застряли дольше часа — пишите в чат команды. Это нормально и не стыдно.
-
