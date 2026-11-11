@@ -69,3 +69,4 @@ class Match(TimestampMixin, Base):
         passive_deletes=True,
         order_by="MatchEvent.minute",
     )
+

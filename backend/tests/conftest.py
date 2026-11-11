@@ -28,6 +28,11 @@ TEST_DATABASE_URL = make_url(
     or make_url(settings.database_url).set(database="matchday_test")
 )
 
+# Эти тесты пересоздают таблицы. Ошибка в переменной окружения не должна
+# превращать базу разработки в тестовую.
+if not TEST_DATABASE_URL.database or not TEST_DATABASE_URL.database.endswith("_test"):
+    raise RuntimeError("APP_TEST_DATABASE_URL должна указывать на отдельную базу *_test")
+
 
 @pytest.fixture
 def anyio_backend() -> str:
@@ -57,6 +62,8 @@ async def db_sessionmaker() -> AsyncIterator[async_sessionmaker[AsyncSession]]:
     try:
         await _create_test_database()
     except OSError as exc:
+        if os.environ.get("CI") or os.environ.get("APP_TEST_DATABASE_URL"):
+            raise
         pytest.skip(f"Нет доступа к Postgres для тестов: {exc}")
     engine = create_async_engine(TEST_DATABASE_URL, poolclass=NullPool)
     async with engine.begin() as conn:
@@ -76,3 +83,4 @@ async def client(db_sessionmaker) -> AsyncIterator[AsyncClient]:
     async with AsyncClient(transport=ASGITransport(app=app), base_url="http://test") as c:
         yield c
     app.dependency_overrides.clear()
+

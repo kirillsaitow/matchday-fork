@@ -54,3 +54,4 @@ def test_removing_goal_recomputes_score():
     assert compute_score(HOME, AWAY, events) == Score(2, 0)
     events.pop()  # удалили ошибочный гол
     assert compute_score(HOME, AWAY, events) == Score(1, 0)
+

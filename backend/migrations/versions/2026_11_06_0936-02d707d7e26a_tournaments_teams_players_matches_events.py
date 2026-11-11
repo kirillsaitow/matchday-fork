@@ -112,3 +112,4 @@ def downgrade() -> None:
     op.drop_index(op.f('ix_teams_tournament_id'), table_name='teams')
     op.drop_table('teams')
     op.drop_table('tournaments')
+

@@ -95,3 +95,25 @@ class MatchEventCreate(BaseModel):
 
 class MatchStatusUpdate(BaseModel):
     status: MatchStatus = Field(examples=["live"])
+
+
+class MatchEventUpdate(BaseModel):
+    """Частичное исправление. Связанные поля проверяются после объединения."""
+
+    model_config = ConfigDict(extra="forbid")
+
+    type: MatchEventType | None = None
+    minute: int | None = Field(default=None, ge=0, le=150)
+    player_id: int | None = None
+    assist_player_id: int | None = None
+    is_own_goal: bool | None = None
+
+    @model_validator(mode="after")
+    def reject_null_required_fields(self) -> Self:
+        for name in self.model_fields_set - {"assist_player_id"}:
+            if getattr(self, name) is None:
+                raise ValueError(f"Поле {name} не может быть null")
+        if not self.model_fields_set:
+            raise ValueError("Нужно указать хотя бы одно поле")
+        return self
+

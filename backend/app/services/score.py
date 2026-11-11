@@ -54,3 +54,4 @@ def compute_score(
         elif team_id == away_team_id:
             away += 1
     return Score(home=home, away=away)
+

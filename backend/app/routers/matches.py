@@ -20,7 +20,7 @@ from app.schemas.match import (
     ScoreOut,
     TeamShort,
 )
-from app.services.match_status import EDITABLE_STATUSES, can_transition
+from app.services.match_status import CREATABLE_STATUSES, EDITABLE_STATUSES, can_transition
 from app.services.score import compute_score
 
 router = APIRouter(prefix="/api", tags=["Матчи"])
@@ -37,7 +37,7 @@ _MATCH_OPTIONS = (
 
 def _sorted_events(match: Match) -> list[MatchEvent]:
     # По минуте, а внутри одной минуты — в порядке добавления.
-    return sorted(match.events, key=lambda e: (e.minute, e.id))
+    return sorted(match.events, key=lambda e: (e.minute, e.created_at, e.id))
 
 
 def _match_out(match: Match) -> MatchOut:
@@ -116,7 +116,11 @@ async def add_event(
 ) -> MatchDetailOut:
     """Добавить в ленту гол или карточку. Возвращает матч с новым счётом."""
     match = await _get_match_or_404(db, match_id)
-    _ensure_events_editable(match)
+    if match.status not in CREATABLE_STATUSES:
+        raise HTTPException(
+            status.HTTP_409_CONFLICT,
+            "Новое событие можно добавить только в идущий матч",
+        )
 
     match_teams = {match.home_team_id, match.away_team_id}
     player = await db.get(Player, body.player_id)
@@ -167,3 +171,4 @@ async def change_status(
     match.status = body.status
     await db.commit()
     return _match_detail_out(await _get_match_or_404(db, match_id))
+

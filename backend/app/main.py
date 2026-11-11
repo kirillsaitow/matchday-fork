@@ -3,10 +3,11 @@ from sqlalchemy import text
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database import get_db
-from app.routers import matches
+from app.routers import events, matches
 
 app = FastAPI(title="Матчдей API", version="0.1.0")
 app.include_router(matches.router)
+app.include_router(events.router)
 
 
 @app.get("/api/health")
@@ -20,3 +21,4 @@ async def health_db(db: AsyncSession = Depends(get_db)) -> dict[str, str]:
     """Проверка, что сервер видит базу данных."""
     await db.execute(text("SELECT 1"))
     return {"status": "ok", "database": "connected"}
+

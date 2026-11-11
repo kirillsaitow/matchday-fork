@@ -139,3 +139,4 @@ async def test_invalid_events_rejected(client, match_data, payload):
 
 async def test_unknown_match_404(client, match_data):
     assert (await client.get("/api/matches/999999")).status_code == 404
+
